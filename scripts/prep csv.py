@@ -6,6 +6,7 @@ from collections import Counter
 
 pd.set_option("display.max_colwidth", 200)
 
+
 def readFile(filePath=None):
     return pd.read_csv(filePath)
 
@@ -24,7 +25,7 @@ def partitionText(df):
         subStrings.append(re.findall('\[sub title\]\s?(.{6,20})\s?\[sub title\]', text))
     subStrings = [x for strs in subStrings for x in strs if ' [sub title] ' not in x]
     subStrings = Counter(subStrings).most_common()
-    print(subStrings[:200])
+    #print(subStrings[:200])
 
     keyPhrases = []
     with open('scripts\\key phrases.txt') as file:
@@ -32,7 +33,15 @@ def partitionText(df):
             keyPhrases.append(line.strip())
     #print(keyPhrases)
 
-    
+    for i,keyPhrase in enumerate(keyPhrases):
+        if i == 0:
+            pattern = keyPhrase
+        pattern = pattern+'|'+keyPhrase
+
+    textsSplits = [re.split(f'\[sub title\]\s?{pattern}\s?\[sub title\]', text) for text in texts]
+    for i in range(len(textsSplits[4])):
+        print(f"for split {i}:", '*'*55, '\n',textsSplits[4][i])
+
 
 if __name__ == '__main__':
     filePath = os.getcwd()+'\\models\\resume.csv'
