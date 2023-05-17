@@ -1,5 +1,5 @@
 from datasets import load_dataset, Dataset
-import os, pandas as pd
+import os, pandas as pd, torch
 import sys
 from transformers import AutoTokenizer, TFAutoModel
 #***************** correct path name
@@ -7,7 +7,7 @@ sys.path.append('C:/Users/Dozie Sixtus/Documents/resume scorer/scripts')
 import prep_csv
 
 dataset = dict()
-dataset['cvContent'] = prep_csv.partitionText()
+dataset['cvContent'] = prep_csv.partitionText()[:500]
 dataset = Dataset.from_dict(dataset)
 print(dataset)
 
@@ -17,3 +17,14 @@ model = TFAutoModel.from_pretrained(model_ckpt, from_pt = True)
 
 def cls_pooling(model_output):
     return model_output.last_hidden_state[:, 0]
+
+def get_embeddings(text_list):
+    encoded_input = tokenizer(
+        text_list, padding=True, truncation=True, return_tensors="tf"
+    )
+    encoded_input = {k: v for k, v in encoded_input.items()}
+    model_output = model(**encoded_input)
+    return cls_pooling(model_output)
+
+embedding = get_embeddings(dataset['cvContent'])
+print(embedding.shape)
