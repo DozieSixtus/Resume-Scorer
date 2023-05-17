@@ -38,11 +38,12 @@ def partitionText():
             pattern = keyPhrase
         pattern = pattern+'|'+keyPhrase
 
-    textsSplits = [re.split(f'\[sub title\]\s?{pattern}\s?\[sub title\]', text) for text in texts]
-    textsSplits = [[x.replace('[sub title] ', '').encode("utf-8") for x in y][1:] for y in textsSplits]
+    textsSplits = [re.split(f'\[sub title\]\s?{pattern}\s?\[sub title\]', text) for text in texts]    
+    textsSplits = [[x.replace('[sub title] ', '') for x in y][1:] for y in textsSplits]
+    textsSplits = [''.join([i if ord(str(i)) < 128 else '' for x in y for i in x]) for y in textsSplits]
 
-    #for i in range(len(textsSplits[4])):
-        #print(f"for split {i}:", '*'*55, '\n',textsSplits[10][i])
+    #for i in range(3):
+        #print(f"for split {i}:", '*'*55, '\n',textsSplits[i])
     
     return textsSplits
 
