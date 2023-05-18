@@ -2,12 +2,11 @@ from datasets import load_dataset, Dataset
 import os, pandas as pd, torch
 import sys
 from transformers import AutoTokenizer, TFAutoModel
-#***************** correct path name
-sys.path.append('C:/Users/Dozie Sixtus/Documents/resume scorer/scripts')
+sys.path.append(os.getcwd() + '\\scripts')
 import prep_csv
 
 dataset = dict()
-dataset['cvContent'] = prep_csv.partitionText()[:500]
+dataset['cvContent'] = prep_csv.partitionText()
 dataset = Dataset.from_dict(dataset)
 print(dataset)
 
