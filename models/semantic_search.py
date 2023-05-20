@@ -6,7 +6,7 @@ sys.path.append(os.getcwd() + '\\scripts')
 import prep_csv
 
 dataset = dict()
-dataset['cvContent'] = prep_csv.partitionText()
+dataset['cvContent'] = prep_csv.partitionText()[:200]
 dataset = Dataset.from_dict(dataset)
 print(dataset)
 
@@ -25,5 +25,12 @@ def get_embeddings(text_list):
     model_output = model(**encoded_input)
     return cls_pooling(model_output)
 
-embedding = get_embeddings(dataset['cvContent'])
+embedding = get_embeddings(dataset['cvContent'][0])
 print(embedding.shape)
+
+embeddings_dataset = dataset.map(
+    lambda x: {"embeddings": get_embeddings(x["cvContent"]).numpy()[0]}, batched=True
+)
+print(embeddings_dataset)
+
+embeddings_dataset.add_faiss_index(column="embeddings")
