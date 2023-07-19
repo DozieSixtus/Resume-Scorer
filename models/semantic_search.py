@@ -6,7 +6,7 @@ sys.path.append(os.getcwd() + '\\scripts')
 import prep_csv, job_desc
 
 dataset = dict()
-dataset['cvContent'] = prep_csv.partitionText()[:200]
+dataset['cvContent'] = prep_csv.partitionText()[:10]
 dataset = Dataset.from_dict(dataset)
 print(dataset)
 
@@ -48,7 +48,7 @@ def queryTexts():
         samplesDf[f"scores{i}"] = scores
         jobScores = jobScores.merge(samplesDf[['cvContent',f"scores{i}"]], on='cvContent', how='left')
         samplesDf.sort_values(f"scores{i}", ascending=False, inplace=True)
-        #print(jobScores)
+        print(jobScores)
         
         for _, row in samplesDf.iterrows():
             #print(f"COMMENT: {row.cvContent}")

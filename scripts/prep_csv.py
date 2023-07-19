@@ -1,5 +1,7 @@
 import pandas as pd
-import os, shutil, numpy as np, re
+import os, shutil, numpy as np, re, nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 from pathlib import Path
 from collections import Counter
 
