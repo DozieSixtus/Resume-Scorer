@@ -2,6 +2,7 @@ import pandas as pd
 import os, shutil, numpy as np, re, nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
 from pathlib import Path
 from collections import Counter
 
@@ -27,7 +28,11 @@ def partitionText():
         subStrings.append(re.findall('\[sub title\]\s?(.{6,20})\s?\[sub title\]', text))
     subStrings = [x for strs in subStrings for x in strs if ' [sub title] ' not in x]
     subStrings = Counter(subStrings).most_common()
-    #print(subStrings[:200])
+    commonWords = [word.lower() for word,_ in subStrings]
+    commons = ['january','february','march','april','may','june','july',
+              'august','september','october','november','december',
+              'jan','feb','mar','apr','jun','jul','aug','sep','oct','nov','dec',
+              'city', 'state']
 
     keyPhrases = []
     with open('scripts\\key phrases.txt') as file:
@@ -39,11 +44,21 @@ def partitionText():
         if i == 0:
             pattern = keyPhrase
         pattern = pattern+'|'+keyPhrase
+    
+    nltk.download('stopwords')
+    stopWords = list(set(stopwords.words('english')))
+    nltk.download('wordnet')
+    lemma = WordNetLemmatizer()
 
-    textsSplits = [re.split(f'\[sub title\]\s?{pattern}\s?\[sub title\]', text) for text in texts]    
+    textsSplits = [re.split(f'\[sub title\]\s?{pattern}\s?\[sub title\]', text) for text in texts]
     textsSplits = [[x.replace('[sub title] ', '') for x in y][1:] for y in textsSplits]
     textsSplits = [''.join([i if ord(str(i)) < 128 else '' for x in y for i in x]) for y in textsSplits]
-
+    textsSplits = [x.split() for x in textsSplits]
+    textsSplits = [''.join([x.lower()+' ' for x in y if x.lower() not in stopWords+commonWords[:100]+commons]) 
+                   for y in textsSplits]
+    textsSplits = [''.join([x for x in y if not x.isdigit()]) for y in textsSplits]
+    textsSplits = [''.join(lemma.lemmatize(x)+' ' for x in y.split()) for y in textsSplits]
+    
     #for i in range(3):
         #print(f"for split {i}:", '*'*55, '\n',textsSplits[i])
     
