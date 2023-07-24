@@ -24,9 +24,9 @@ pip install -r requirements.txt
 
 ## Inferencing
 To implement resume scorer on your device, `run.py` contains the code for inferencing. `run.py` takes three parameters:
-    - `--cvPath`: this parameter takes the path to the FOLDER where the cv file is located. The cv file needs to ba a pdf file format. The path object type should be a `str` object.
-    - `--jobDesc`: this parameter is the ABSOLUTE PATH to a text file (.txt) containing the job description for the role that needs to be scored. The path object type should be a `str` object.
-    - `--topCV`: this `integer` parameter is used to determine to top n resumes that matches a job description. `--topCV` would take a value of `1` if an individual wants to obtain a score from a single CV, but the value could be greater than 1 if multiple CVs are being scored. So a recruiter can set the value of `--topCV` to be the number of best matching CVs desired.
+&emsp; `--cvPath`: this parameter takes the path to the FOLDER where the cv file is located. The cv file needs to ba a pdf file format. The path object type should be a `str` object.
+&emsp; - `--jobDesc`: this parameter is the ABSOLUTE PATH to a text file (.txt) containing the job description for the role that needs to be scored. The path object type should be a `str` object.
+&emsp; - `--topCV`: this `integer` parameter is used to determine to top n resumes that matches a job description. `--topCV` would take a value of `1` if an individual wants to obtain a score from a single CV, but the value could be greater than 1 if multiple CVs are being scored. So a recruiter can set the value of `--topCV` to be the number of best matching CVs desired.
 
 ```
 python .\scripts\run.py --cvPath "resumeFolderPath" --jobDesc "jobDescriptionFilePath" --topCV 1
