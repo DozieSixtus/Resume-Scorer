@@ -54,7 +54,7 @@ def partitionText():
     textsSplits = [[x.replace('[sub title] ', '') for x in y][1:] for y in textsSplits]
     textsSplits = [''.join([i if ord(str(i)) < 128 else '' for x in y for i in x]) for y in textsSplits]
     textsSplits = [x.split() for x in textsSplits]
-    textsSplits = [''.join([x.lower()+' ' for x in y if x.lower() not in stopWords+commonWords[:100]+commons]) 
+    textsSplits = [''.join([x.lower()+' ' for x in y if x.lower() not in commonWords[:100]+commons]) 
                    for y in textsSplits]
     textsSplits = [''.join([x for x in y if not x.isdigit()]) for y in textsSplits]
     textsSplits = [''.join(lemma.lemmatize(x)+' ' for x in y.split()) for y in textsSplits]
@@ -65,7 +65,7 @@ def partitionText():
     return textsSplits
 
 
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     filePath = os.getcwd()+'\\models\\resume.csv'
     df = remove_encodings(readFile(filePath =filePath))
-    partitionText()
+    partitionText()"""
